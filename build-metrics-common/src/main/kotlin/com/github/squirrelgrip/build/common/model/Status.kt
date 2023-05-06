@@ -19,6 +19,7 @@ data class Status(
     override fun toString(): String {
         return "Status(status=$status, startTime=$startTime, endTime=$endTime, duration=$duration)"
     }
+
     fun start() {
         status = PENDING
         startTime = Instant.now()
