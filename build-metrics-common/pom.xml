@@ -6,7 +6,6 @@
         <artifactId>build-metrics</artifactId>
         <version>1.0.7-SNAPSHOT</version>
     </parent>
-
     <artifactId>build-metrics-common</artifactId>
 
     <dependencies>
