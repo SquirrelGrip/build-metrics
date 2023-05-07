@@ -7,13 +7,14 @@
         <version>1.3.8</version>
     </parent>
     <artifactId>build-metrics</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>build-metrics-common</module>
         <module>build-metrics-extension</module>
         <module>build-metrics-server</module>
+        <module>build-metrics-server2</module>
     </modules>
 
     <properties>
@@ -27,9 +28,9 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency><groupId>com.github.squirrelgrip</groupId><artifactId>build-metrics-common</artifactId><version>1.0.1</version></dependency>
-            <dependency><groupId>com.github.squirrelgrip</groupId><artifactId>build-metrics-extension</artifactId><version>1.0.1</version></dependency>
-            <dependency><groupId>com.github.squirrelgrip</groupId><artifactId>build-metrics-server</artifactId><version>1.0.1</version></dependency>
+            <dependency><groupId>com.github.squirrelgrip</groupId><artifactId>build-metrics-common</artifactId><version>1.0.3</version></dependency>
+            <dependency><groupId>com.github.squirrelgrip</groupId><artifactId>build-metrics-extension</artifactId><version>1.0.3</version></dependency>
+            <dependency><groupId>com.github.squirrelgrip</groupId><artifactId>build-metrics-server</artifactId><version>1.0.3</version></dependency>
             <dependency><groupId>com.github.squirrelgrip</groupId><artifactId>kotlin-extensions</artifactId><version>${kotlin-extensions.version}</version></dependency>
             <dependency><groupId>commons-io</groupId><artifactId>commons-io</artifactId><version>${commons-io.version}</version></dependency>
         </dependencies>

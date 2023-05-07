@@ -84,7 +84,6 @@ class BuildMetricsExtension(
             event is MavenExecutionResult -> {
                 rootMavenProject = event.project
             }
-
             event is SettingsBuildingRequest -> {}
             event is SettingsBuildingResult -> {}
             event is ToolchainsBuildingRequest -> {}
@@ -106,11 +105,7 @@ class BuildMetricsExtension(
                     System.getProperty("user.name"),
                     session.goals,
                     tag,
-                    session.projectDependencyGraph.sortedProjects.map {
-                        it.toProject()
-                    }.associateWith {
-                        ProjectProfile(it)
-                    }
+                    getProjectProfiles(session)
                 )
                 sessionProfile.status.start()
                 LOGGER.info(
@@ -182,6 +177,14 @@ class BuildMetricsExtension(
         }
     }
 
+    private fun getProjectProfiles(session: MavenSession) =
+        session.projectDependencyGraph.sortedProjects
+            .map {
+                it.toProject()
+            }.associate {
+                it.id to ProjectProfile(it)
+            }
+
     private fun MojoExecution.toMojo(): Mojo =
         Mojo(groupId, artifactId, version)
 
@@ -206,7 +209,6 @@ class BuildMetricsExtension(
             ForkedProjectFailed -> FAILED
             else -> PENDING
         }
-
 
     private fun logResult(session: MavenSession) {
         // val mavenHome = session.systemProperties.getProperty("maven.home")

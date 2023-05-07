@@ -49,7 +49,7 @@ object Server {
             try {
                 val item = diskDataStorage.getSessionProfile(id)
                 httpExchange.sendResponseHeaders(200, 0)
-                httpExchange.responseBody.write(item.toByteArray())
+                item.toJson(httpExchange.responseBody)
             } catch (e: Throwable) {
                 e.printStackTrace()
                 httpExchange.sendResponseHeaders(500, e.toString().length.toLong())
