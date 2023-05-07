@@ -52,6 +52,6 @@ class DiskDataStorage {
             it.project.groupId == groupId && it.project.artifactId == artifactId
         } ?: emptyList()
 
-    fun getSessionProfile(id: String): String =
-        File(SESSION_PROFILES, "$id.json").readText()
+    fun getSessionProfile(id: String): SessionProfile =
+        File(SESSION_PROFILES, "$id.json").toInstance()
 }

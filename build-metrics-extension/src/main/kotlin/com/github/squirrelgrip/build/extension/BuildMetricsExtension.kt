@@ -75,20 +75,20 @@ class BuildMetricsExtension(
     }
 
     override fun onEvent(event: Any) {
-        when {
-            event is RepositoryEvent -> {}
-            event is ExecutionEvent -> onExecutionEvent(event)
-            event is DependencyResolutionRequest -> {}
-            event is DependencyResolutionResult -> {}
-            event is MavenExecutionRequest -> {}
-            event is MavenExecutionResult -> {
+        when (event) {
+            is RepositoryEvent -> {}
+            is ExecutionEvent -> onExecutionEvent(event)
+            is DependencyResolutionRequest -> {}
+            is DependencyResolutionResult -> {}
+            is MavenExecutionRequest -> {}
+            is MavenExecutionResult -> {
                 rootMavenProject = event.project
             }
 
-            event is SettingsBuildingRequest -> {}
-            event is SettingsBuildingResult -> {}
-            event is ToolchainsBuildingRequest -> {}
-            event is ToolchainsBuildingResult -> {}
+            is SettingsBuildingRequest -> {}
+            is SettingsBuildingResult -> {}
+            is ToolchainsBuildingRequest -> {}
+            is ToolchainsBuildingResult -> {}
             else -> println("UNKNOWN EVENT ${event.javaClass}")
         }
     }
@@ -106,11 +106,7 @@ class BuildMetricsExtension(
                     System.getProperty("user.name"),
                     session.goals,
                     tag,
-                    session.projectDependencyGraph.sortedProjects.map {
-                        it.toProject()
-                    }.associateWith {
-                        ProjectProfile(it)
-                    }
+                    getProjectProfiles(session)
                 )
                 sessionProfile.status.start()
                 LOGGER.info(
@@ -182,6 +178,14 @@ class BuildMetricsExtension(
         }
     }
 
+    private fun getProjectProfiles(session: MavenSession) =
+        session.projectDependencyGraph.sortedProjects
+            .map {
+                it.toProject()
+            }.associate {
+                it.id to ProjectProfile(it)
+            }
+
     private fun MojoExecution.toMojo(): Mojo =
         Mojo(groupId, artifactId, version)
 
@@ -206,7 +210,6 @@ class BuildMetricsExtension(
             ForkedProjectFailed -> FAILED
             else -> PENDING
         }
-
 
     private fun logResult(session: MavenSession) {
         // val mavenHome = session.systemProperties.getProperty("maven.home")

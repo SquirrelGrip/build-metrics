@@ -10,13 +10,9 @@ class SessionProfile(
     val username: String,
     val goals: List<String>,
     val branch: String,
-    @JsonIgnore
-    private val profiles: Map<Project, ProjectProfile> = emptyMap(),
+    val profiles: Map<String, ProjectProfile> = emptyMap(),
     val status: Status = Status()
 ) {
-    val projectProfiles: Collection<ProjectProfile>
-        get() = profiles.values
-
     fun getProjectProfile(project: Project): ProjectProfile =
-        profiles[project]!!
+        profiles[project.id]!!
 }

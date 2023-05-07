@@ -9,12 +9,6 @@
 
     <artifactId>build-metrics-server</artifactId>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency><groupId>com.github.squirrelgrip</groupId><artifactId>build-metrics-common</artifactId></dependency>
         <dependency><groupId>org.apache.maven</groupId><artifactId>maven-core</artifactId><scope>provided</scope></dependency>
@@ -48,7 +42,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <jvmTarget>11</jvmTarget>
+                    <jvmTarget>${maven.compiler.target}</jvmTarget>
                 </configuration>
             </plugin>
         </plugins>
