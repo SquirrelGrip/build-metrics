@@ -75,20 +75,19 @@ class BuildMetricsExtension(
     }
 
     override fun onEvent(event: Any) {
-        when (event) {
-            is RepositoryEvent -> {}
-            is ExecutionEvent -> onExecutionEvent(event)
-            is DependencyResolutionRequest -> {}
-            is DependencyResolutionResult -> {}
-            is MavenExecutionRequest -> {}
-            is MavenExecutionResult -> {
+        when {
+            event is RepositoryEvent -> {}
+            event is ExecutionEvent -> onExecutionEvent(event)
+            event is DependencyResolutionRequest -> {}
+            event is DependencyResolutionResult -> {}
+            event is MavenExecutionRequest -> {}
+            event is MavenExecutionResult -> {
                 rootMavenProject = event.project
             }
-
-            is SettingsBuildingRequest -> {}
-            is SettingsBuildingResult -> {}
-            is ToolchainsBuildingRequest -> {}
-            is ToolchainsBuildingResult -> {}
+            event is SettingsBuildingRequest -> {}
+            event is SettingsBuildingResult -> {}
+            event is ToolchainsBuildingRequest -> {}
+            event is ToolchainsBuildingResult -> {}
             else -> println("UNKNOWN EVENT ${event.javaClass}")
         }
     }
