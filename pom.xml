@@ -87,4 +87,60 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Adrian Richter</name>
+            <timezone>Asia/Singapore</timezone>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <site>
+            <id>root</id>
+            <url>http://localhost</url>
+        </site>
+        <snapshotRepository>
+            <id>oss-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>oss-release</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <properties>
+                <deployment.url>${project.distributionManagement.repository.url}</deployment.url>
+            </properties>
+        </profile>
+        <profile>
+            <id>gitflowStart</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.manamind.jgitflow</groupId>
+                        <artifactId>jgitflow-maven-plugin</artifactId>
+                        <version>${jgitflow-maven-plugin.version}</version>
+                        <configuration combine.self="append">
+                            <allowSnapshots>true</allowSnapshots>
+                            <pushReleases>false</pushReleases>
+                            <pushHotfixes>false</pushHotfixes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
