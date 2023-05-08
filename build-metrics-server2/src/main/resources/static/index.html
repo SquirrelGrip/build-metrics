@@ -141,10 +141,6 @@
 <script>
     var maxRecords = 20;
 
-    function parseTime(seconds) {
-        return seconds % 60 + "s";
-    }
-
     function parseDuration(ms) {
         var ms = parseInt(ms);
         var seconds = parseInt(ms / 1000);
@@ -217,7 +213,7 @@
             tbody.appendTo(table);
 
             $.each(items.sort(function (a, b) {
-                return b.status.startTime - a.status.startTime;
+                return Date.parse(b.status.startTime) - Date.parse(a.status.startTime);
             }).slice(0, maxRecords), function (index, sessionSummary) {
 
                 $("<li/>", {
@@ -233,7 +229,7 @@
                     "<td><span data-feather='git-branch'></span> " + sessionSummary.branch + "</td>" +
                     "<td>" + sessionSummary.goals + "</td>" +
                     "<td>" + sessionSummary.username + "@" + sessionSummary.hostname + "</td>" +
-                    "<td>" + parseTime(sessionSummary.status.duration) + "</td>" +
+                    "<td>" + parseDuration(sessionSummary.status.duration) + "</td>" +
                     "</tr>");
             });
 
@@ -254,7 +250,7 @@
             items.push(projectSummary);
         });
         $.each(items.sort(function (a, b) {
-            return b.latestSessionSummary.startTime - a.latestSessionSummary.startTime;
+            return Date.parse(b.sessionSummary.status.startTime) - Date.parse(a.sessionSummary.status.startTime);
         }).slice(0, maxRecords), function (index, projectSummary) {
             $("<li/>", {
                 class: "nav-item",
@@ -277,7 +273,7 @@
                     parseStatus(data.status.status) +
                     "<span data-feather='git-branch'></span> " + data.branch + " " +
                     data.username + "@" + data.hostname + " " +
-                    parseTime(data.status.duration)
+                    parseDuration(data.status.duration)
             }).appendTo("main");
 
             var pre = $("<p/>", {
@@ -293,10 +289,13 @@
                 return a.status.duration > 0 && a.status.duration > data.status.duration / 2000
             };
             var byStartTime = function (a, b) {
-                return b.status.startTime - b.status.startTime
+                return Date.parse(b.status.startTime) - Date.parse(a.status.startTime)
             };
             var byDuration = function (a, b) {
                 return b.duration - a.duration
+            };
+            var byStatusDuration = function (a, b) {
+                return b.status.duration - a.status.duration
             };
 
 
@@ -304,6 +303,8 @@
             var summaryMojoProfiles = {};
             $.each(data.projectProfiles.filter(significantlyLong).sort(byStartTime), function (index, projectProfile) {
                 $.each(projectProfile.mojoProfiles.filter(significantlyLong).sort(byStartTime), function (index, mojoProfile) {
+                    console.log(mojoProfile.status.startTime)
+                    console.log(mojoProfile.status.endTime)
                     mojoProfiles.push([
                         "Thread #" + mojoProfile.threadIndex,
                         projectProfile.project.artifactId + "/" + mojoProfile.mojo.artifactId + ":" + mojoProfile.executionId + ":" + mojoProfile.goal,
@@ -372,25 +373,25 @@
 
             tbody.appendTo(table);
 
-            $.each(data.projectProfiles.filter(significantlyLong).sort(byDuration), function (index, projectProfile) {
+            $.each(data.projectProfiles.filter(significantlyLong).sort(byStatusDuration), function (index, projectProfile) {
                 var mojoProfiles = [];
                 if (projectProfile.phaseProfiles) {
                     $.each(projectProfile.phaseProfiles, function (indexn, phaseProfile) {
-                        $.each(phaseProfile.mojoProfiles.filter(significantlyLong).sort(byDuration), function (index, mojoProfile) {
+                        $.each(phaseProfile.mojoProfiles.filter(significantlyLong).sort(byStatusDuration), function (index, mojoProfile) {
                             mojoProfiles.push(mojoProfile);
                         });
                     });
                 } else {
-                    $.each(projectProfile.mojoProfiles.filter(significantlyLong).sort(byDuration), function (index, mojoProfile) {
+                    $.each(projectProfile.mojoProfiles.filter(significantlyLong).sort(byStatusDuration), function (index, mojoProfile) {
                         mojoProfiles.push(mojoProfile);
                     });
                 }
 
                 tbody.append("<tr>" +
                     "<td>" + projectProfile.project.artifactId + "</td>" +
-                    "<td>" + parseTime(projectProfile.status.duration) + "</td>" +
+                    "<td>" + parseDuration(projectProfile.status.duration) + "</td>" +
                     "<td><table class='table'><tbody>" + mojoProfiles.map(function (mojoProfile) {
-                        return "<tr><td>" + mojoProfile.mojo.artifactId + ":" + mojoProfile.executionId + ":" + mojoProfile.goal + "</td><td>" + parseTime(mojoProfile.status.duration) + "</td></tr>";
+                        return "<tr><td>" + mojoProfile.mojo.artifactId + ":" + mojoProfile.executionId + ":" + mojoProfile.goal + "</td><td>" + parseDuration(mojoProfile.status.duration) + "</td></tr>";
                     }).join("") + "</tbody></table></td>" +
                     "</tr>");
 

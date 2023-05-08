@@ -13,8 +13,8 @@ data class Status(
         private set
     var endTime: Instant = Instant.EPOCH
         private set
-    val duration: Duration
-        get() = Duration.between(startTime, endTime)
+    val duration: Long
+        get() = Duration.between(startTime, endTime).toMillis()
 
     override fun toString(): String {
         return "Status(status=$status, startTime=$startTime, endTime=$endTime, duration=$duration)"

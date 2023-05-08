@@ -10,9 +10,11 @@ class SessionProfile(
     val username: String,
     val goals: List<String>,
     val branch: String,
-    val profiles: Map<String, ProjectProfile> = emptyMap(),
+    val projectProfiles: List<ProjectProfile> = emptyList(),
     val status: Status = Status()
 ) {
     fun getProjectProfile(project: Project): ProjectProfile =
-        profiles[project.id]!!
+        projectProfiles.first {
+            it.project == project
+        }
 }

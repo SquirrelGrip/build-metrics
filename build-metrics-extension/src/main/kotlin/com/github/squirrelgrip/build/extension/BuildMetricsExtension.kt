@@ -84,6 +84,7 @@ class BuildMetricsExtension(
             event is MavenExecutionResult -> {
                 rootMavenProject = event.project
             }
+
             event is SettingsBuildingRequest -> {}
             event is SettingsBuildingResult -> {}
             event is ToolchainsBuildingRequest -> {}
@@ -180,9 +181,7 @@ class BuildMetricsExtension(
     private fun getProjectProfiles(session: MavenSession) =
         session.projectDependencyGraph.sortedProjects
             .map {
-                it.toProject()
-            }.associate {
-                it.id to ProjectProfile(it)
+                ProjectProfile(it.toProject())
             }
 
     private fun MojoExecution.toMojo(): Mojo =

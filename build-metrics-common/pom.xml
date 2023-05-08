@@ -4,9 +4,8 @@
     <parent>
         <groupId>com.github.squirrelgrip</groupId>
         <artifactId>build-metrics</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
     </parent>
-
     <artifactId>build-metrics-common</artifactId>
 
     <dependencies>
@@ -37,25 +36,6 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <jvmTarget>${maven.compiler.target}</jvmTarget>
-                </configuration>
             </plugin>
         </plugins>
     </build>
