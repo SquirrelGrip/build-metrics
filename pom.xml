@@ -31,17 +31,22 @@
             <dependency>
                 <groupId>com.github.squirrelgrip</groupId>
                 <artifactId>build-metrics-common</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.squirrelgrip</groupId>
                 <artifactId>build-metrics-extension</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.squirrelgrip</groupId>
                 <artifactId>build-metrics-server</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.2-SNAPSHOT</version>
+            </dependency>
+             <dependency>
+                <groupId>com.github.squirrelgrip</groupId>
+                <artifactId>build-metrics-server2</artifactId>
+                <version>1.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.github.squirrelgrip</groupId>
