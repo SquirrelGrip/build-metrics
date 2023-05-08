@@ -33,7 +33,7 @@ object Server {
             val groupId = projectId.split(COLON_REGEX).dropLastWhile { it.isEmpty() }[0]
             val artifactId = projectId.split(COLON_REGEX).dropLastWhile { it.isEmpty() }[1]
             try {
-                val items = diskDataStorage.listSessionSummaries(groupId, artifactId)
+                val items = diskDataStorage.getSessionSummaries(groupId, artifactId)
                 httpExchange.sendResponseHeaders(200, 0)
                 items.toJson(httpExchange.responseBody)
             } catch (e: Throwable) {
@@ -60,7 +60,7 @@ object Server {
         }
         server.createContext("/api/v1/project-summaries") { httpExchange: HttpExchange ->
             try {
-                val items = diskDataStorage.listProjectSummaries()
+                val items = diskDataStorage.getProjectSummaries()
                 httpExchange.sendResponseHeaders(200, 0)
                 items.toJson(httpExchange.responseBody)
             } catch (e: Throwable) {

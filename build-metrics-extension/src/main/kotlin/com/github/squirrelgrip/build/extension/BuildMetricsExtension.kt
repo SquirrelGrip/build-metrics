@@ -1,7 +1,5 @@
 package com.github.squirrelgrip.build.extension
 
-import com.github.squirrelgrip.build.common.infra.DataWriter
-import com.github.squirrelgrip.build.common.infra.DiskDataWriter
 import com.github.squirrelgrip.build.common.model.Mojo
 import com.github.squirrelgrip.build.common.model.MojoProfile
 import com.github.squirrelgrip.build.common.model.Project
@@ -53,7 +51,7 @@ import javax.inject.Singleton
 class BuildMetricsExtension(
     private val dataStorageFactory: (SessionProfile) -> DataWriter
 ) : AbstractEventSpy() {
-    constructor() : this({ DiskDataWriter(it) })
+    constructor() : this({ DataWriter(it) })
 
     private lateinit var sessionProfile: SessionProfile
     private lateinit var rootMavenProject: MavenProject
@@ -127,7 +125,6 @@ class BuildMetricsExtension(
                     sessionProfile.status.end(SUCCEEDED)
                 }
                 dataWriter.close()
-                logResult(session)
             }
 
             ExecutionEvent.Type.ProjectStarted -> {
@@ -208,26 +205,6 @@ class BuildMetricsExtension(
             ForkedProjectFailed -> FAILED
             else -> PENDING
         }
-
-    private fun logResult(session: MavenSession) {
-        // val mavenHome = session.systemProperties.getProperty("maven.home")
-        // LOGGER.info("To view your build scan, start-up the server:")
-        // LOGGER.info(
-        //     "java -jar {}",
-        //     (mavenHome
-        //         + File.separator
-        //         + "lib"
-        //         + File.separator
-        //         + "ext"
-        //         + File.separator
-        //         + "maven-build-scanner-jar-with-dependencies.jar")
-        // )
-        // LOGGER.info(
-        //     "Then open http://localhost:3000/?projectId={}&sessionId={}",
-        //     sessionProfile.project.id,
-        //     sessionProfile.id
-        // )
-    }
 
     private fun maybeCheckPoint() {
         if (Duration.between(lastCheckPoint, Instant.now()).seconds > 30) {
