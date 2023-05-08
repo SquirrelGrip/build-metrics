@@ -6,17 +6,18 @@ import com.github.squirrelgrip.build.common.model.SessionProfile
 import com.github.squirrelgrip.build.common.model.SessionSummary
 import com.github.squirrelgrip.extension.json.Json
 import feign.Feign
-import feign.codec.Encoder
 import feign.hc5.ApacheHttp5Client
 import feign.jackson.JacksonDecoder
 import feign.jackson.JacksonEncoder
 
 class FeignDataStorage: DataStorage {
-    var dataStorageOperations: DataStorageOperations = Feign.builder()
+    private val url = "http://localhost:3000"
+
+    private var dataStorageOperations: DataStorageOperations = Feign.builder()
         .client(ApacheHttp5Client())
         .encoder(JacksonEncoder(Json.objectMapper))
         .decoder(JacksonDecoder(Json.objectMapper))
-        .target(DataStorageOperations::class.java, "http://localhost:3000")
+        .target(DataStorageOperations::class.java, url)
 
     override fun open() {
     }
