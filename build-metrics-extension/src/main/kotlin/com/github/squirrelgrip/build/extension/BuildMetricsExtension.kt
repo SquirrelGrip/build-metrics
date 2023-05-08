@@ -1,5 +1,6 @@
 package com.github.squirrelgrip.build.extension
 
+import com.github.squirrelgrip.build.common.infra.FeignDataStorage
 import com.github.squirrelgrip.build.common.model.Mojo
 import com.github.squirrelgrip.build.common.model.MojoProfile
 import com.github.squirrelgrip.build.common.model.Project
@@ -51,7 +52,7 @@ import javax.inject.Singleton
 class BuildMetricsExtension(
     private val dataStorageFactory: (SessionProfile) -> DataWriter
 ) : AbstractEventSpy() {
-    constructor() : this({ DataWriter(it) })
+    constructor() : this({ DataWriter(it, it.project, FeignDataStorage()) })
 
     private lateinit var sessionProfile: SessionProfile
     private lateinit var rootMavenProject: MavenProject

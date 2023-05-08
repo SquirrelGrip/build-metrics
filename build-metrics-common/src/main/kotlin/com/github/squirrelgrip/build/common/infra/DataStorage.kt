@@ -1,6 +1,5 @@
 package com.github.squirrelgrip.build.common.infra
 
-import com.github.squirrelgrip.build.common.model.Project
 import com.github.squirrelgrip.build.common.model.ProjectSummary
 import com.github.squirrelgrip.build.common.model.SessionProfile
 import com.github.squirrelgrip.build.common.model.SessionSummary

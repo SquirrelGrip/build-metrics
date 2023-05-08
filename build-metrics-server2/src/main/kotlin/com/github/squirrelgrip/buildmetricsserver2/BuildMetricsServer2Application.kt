@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Bean
 class BuildMetricsServer2Application {
 	@Bean
 	fun dataStorage(): DataStorage =
-		DiskDataStorage()
+		DiskDataStorage().apply {
+			open()
+		}
 }
 
 fun main(args: Array<String>) {

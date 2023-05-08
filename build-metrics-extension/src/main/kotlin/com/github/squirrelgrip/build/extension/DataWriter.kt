@@ -11,23 +11,23 @@ import java.io.Closeable
 class DataWriter(
     private val sessionProfile: SessionProfile,
     private var project: Project,
-    private val aux: DataStorage = DiskDataStorage()
+    private val dataStorage: DataStorage = DiskDataStorage()
 ): Closeable {
     constructor(sessionProfile: SessionProfile): this(sessionProfile, sessionProfile.project)
 
     fun open() {
-        aux.open()
-        aux.updateSessionSummary(getSessionSummary())
+        dataStorage.open()
+        dataStorage.updateSessionSummary(getSessionSummary())
     }
 
     fun checkPoint() {
-        aux.updateSessionProfile(sessionProfile)
+        dataStorage.updateSessionProfile(sessionProfile)
     }
 
     override fun close() {
-        aux.updateProjectSummary(ProjectSummary(project, getSessionSummary()))
-        aux.updateSessionSummary(getSessionSummary())
-        aux.updateSessionProfile(sessionProfile)
+        dataStorage.updateProjectSummary(ProjectSummary(project, getSessionSummary()))
+        dataStorage.updateSessionSummary(getSessionSummary())
+        dataStorage.updateSessionProfile(sessionProfile)
     }
 
     private fun getSessionSummary() = SessionSummary(sessionProfile)
