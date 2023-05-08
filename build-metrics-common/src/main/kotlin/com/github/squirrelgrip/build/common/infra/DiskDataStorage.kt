@@ -1,6 +1,5 @@
 package com.github.squirrelgrip.build.common.infra
 
-import com.github.squirrelgrip.build.common.model.Project
 import com.github.squirrelgrip.build.common.model.ProjectSummary
 import com.github.squirrelgrip.build.common.model.SessionProfile
 import com.github.squirrelgrip.build.common.model.SessionSummary
@@ -8,7 +7,7 @@ import com.github.squirrelgrip.extension.json.toInstance
 import com.github.squirrelgrip.extension.json.toJson
 import java.io.File
 
-class DiskDataStorage {
+class DiskDataStorage : DataStorage {
     companion object {
         private val RESULTS = File(File(System.getProperty("user.home"), ".mvn"), "scans")
         private val SESSION_SUMMARIES = File(RESULTS, "session-summaries")
@@ -16,42 +15,42 @@ class DiskDataStorage {
         private val SESSION_PROFILES = File(RESULTS, "session-profiles")
     }
 
-    fun open() {
+    override fun open() {
         SESSION_PROFILES.mkdirs()
         PROJECT_SUMMARIES.mkdirs()
         SESSION_SUMMARIES.mkdirs()
     }
 
-    fun updateProjectSummary(project: Project, sessionProfile: SessionProfile) {
-        ProjectSummary(project, SessionSummary(sessionProfile)).toJson(
-            File(PROJECT_SUMMARIES, "${project.groupId}-${project.artifactId}.json")
+    override fun updateProjectSummary(projectSummary: ProjectSummary) {
+        projectSummary.toJson(
+            File(PROJECT_SUMMARIES, "${projectSummary.groupId}-${projectSummary.artifactId}.json")
         )
     }
 
-    fun updateSessionSummary(sessionProfile: SessionProfile) {
-        SessionSummary(sessionProfile).toJson(
-            File(SESSION_SUMMARIES, "${sessionProfile.id}.json")
+    override fun updateSessionSummary(sessionSummary: SessionSummary) {
+        sessionSummary.toJson(
+            File(SESSION_SUMMARIES, "${sessionSummary.id}.json")
         )
     }
 
-    fun updateSessionProfile(sessionProfile: SessionProfile) {
+    override fun updateSessionProfile(sessionProfile: SessionProfile) {
         sessionProfile.toJson(
             File(SESSION_PROFILES, "${sessionProfile.id}.json")
         )
     }
 
-    fun listProjectSummaries(): List<ProjectSummary> =
+    override fun getProjectSummaries(): List<ProjectSummary> =
         PROJECT_SUMMARIES.listFiles()?.map {
             it.toInstance()
         } ?: emptyList()
 
-    fun listSessionSummaries(groupId: String?, artifactId: String?): List<SessionSummary> =
+    override fun getSessionSummaries(groupId: String, artifactId: String): List<SessionSummary> =
         SESSION_SUMMARIES.listFiles()?.map {
             it.toInstance<SessionSummary>()
         }?.filter {
             it.project.groupId == groupId && it.project.artifactId == artifactId
         } ?: emptyList()
 
-    fun getSessionProfile(id: String): SessionProfile =
+    override fun getSessionProfile(id: String): SessionProfile =
         File(SESSION_PROFILES, "$id.json").toInstance()
 }
